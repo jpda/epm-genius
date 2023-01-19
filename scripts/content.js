@@ -1,32 +1,22 @@
 // v0.1.0 EPM help overlay
 
 // static help overlay
-const elementData = [
+const overlayData = [
     {
         selector: "[href='/data-sources/data-collectors/']",
-        content: "Start here to connect environments to EPM"
+        content: "Connect environments to EPM",
+        tooltipDirection: "bottom"
+    },
+    {
+        selector: "[aria-label='Create Configuration']",
+        content: "Configure your Data Collectors",
+        tooltipDirection: "right"
     }
 ];
 
 function generateHelper() {
     console.log("Generating helper");
     // generate the visual clippy in the bottom right
-    const clippyStyle = document.createElement("style");
-    // add the CSS as a string using template literals
-    clippyStyle.appendChild(document.createTextNode(`
-        .helper-container {
-            position: absolute;
-            bottom: 50px;
-            right: 50px;
-            z-index: 9999;
-        }
-        .helper-container img {
-            max-width: 15em;
-        }`
-    ));
-    const head = document.getElementsByTagName('head')[0];
-    head.appendChild(clippyStyle);
-    console.log("finished adding helper style, adding container");
 
     const clippy = document.createElement("div");
     clippy.classList.add("clippy");
@@ -40,35 +30,53 @@ function generateHelper() {
 
 }
 
-function generateInfoBox() {
+function generateInfoBox(foundElement, targetElementData) {
+    const infoBox = document.createElement("div");
+    infoBox.classList.add("epmg-tooltip");
 
+    const container = document.createElement("div");
+    container.classList.add("epmg-tooltipcontainer");
+    container.classList.add(`${targetElementData.tooltipDirection}`);
+    container.innerHTML = `<span class="epmg-tooltiptext">${targetElementData.content}</span>`;
+
+    infoBox.appendChild(container);
+    foundElement.appendChild(infoBox);
+    foundElement.classList.add("epmg-tooltip");
 }
 
-async function findAttachableItems() {
-    elementData.forEach(async (element) => {
-        const elements = document.querySelectorAll(element.selector);
-        if (elements.length === 0) {
-            console.log(`no elements found for ${element.selector}, retrying in 5 seconds`);
+async function findAttachableItems(attempts, timeoutId) {
+    if (!attempts) attempts = 0;
+    if (attempts > 3) { console.log("too many attempts, ending"); clearTimeout(timeoutId); return; }
+
+    overlayData.forEach(async (targetElementData) => {
+        const targetElements = document.querySelectorAll(targetElementData.selector);
+        if (targetElements.length === 0) {
+
             // hacky, but retry in 5 seconds if there are no elements - since no elements means it likely hasn't loaded yet
             // or you have bad selectors - exponential backoff would be better
-            setTimeout(findAttachableItems, 5000);
+            attempts++;
+            var nextTimeout = attempts * 5000;
+
+            console.log(`no elements found for ${targetElementData.selector}, retrying in ${nextTimeout / 1000} seconds`);
+            var timeoutId = setTimeout(function () { findAttachableItems(attempts); }, nextTimeout, timeoutId);
             return;
         }
-        console.log(`found ${elements.length} elements`);
+        console.log(`found ${targetElements.length} elements`);
 
-        elements.forEach((el) => {
-            el.addEventListener("hover", () => { console.log(`hovering over ${el.nodeValue}`); });
-            el.style.backgroundColor = 'yellow';
+        targetElements.forEach((foundElement) => {
+            console.log(`generating infobox for ${foundElement.nodeValue}`);
+            generateInfoBox(foundElement, targetElementData);
         });
     });
 }
 
 function init() {
     generateHelper();
-    generateInfoBox();
-    findAttachableItems();
+    findAttachableItems(0, 0);
+    //initRbacData();
 }
 
 // need to find an event for both the page load and the react app load completion\
 // this is a hacky way to do it
 setTimeout(init, 5000);
+

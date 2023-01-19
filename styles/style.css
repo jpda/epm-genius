@@ -1,0 +1,86 @@
+/* tooltip css from https://www.w3schools.com/howto/howto_css_tooltip.asp */
+/* #region Tooltip container */
+.epmg-tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+/* tooltip container */
+
+.epmg-tooltip .epmg-tooltipcontainer {
+    min-width: 16em;
+    min-height: 12em;
+    background: #b12bfa;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    /* Position the tooltip text */
+    position: absolute;
+    /* z-index: 9999 !important; */
+    /* bottom: 125%;
+    left: 50%;
+    margin-left: -60px; */
+}
+
+.epmg-tooltip .epmg-tooltipcontainer .top {
+    bottom: 125%;
+}
+
+.epmg-tooltip .epmg-tooltipcontainer .right {
+    left: 100%;
+    margin-left: 0;
+    margin-top: -5px;
+}
+
+.epmg-tooltip .epmg-tooltipcontainer .bottom {
+    top: 125%;
+}
+
+.epmg-tooltip .epmg-tooltipcontainer .left {
+    right: 100%;
+    margin-right: 0;
+    margin-top: -5px;
+}
+
+/* Tooltip text */
+.epmg-tooltip .epmg-tooltiptext {
+    background-color: red;
+    color: #fff;
+}
+
+/* Tooltip arrow */
+.epmg-tooltip .epmg-tooltipcontainer::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.epmg-tooltip:hover .epmg-tooltipcontainer {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* #endregion end w3 tooltip css */
+
+/* helper container */
+.helper-container {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    /* z-index: 9999; */
+}
+
+.helper-container img {
+    max-width: 10em;
+}

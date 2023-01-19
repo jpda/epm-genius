@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Clippy PM",
+    "name": "EPM Genius",
     "version": "1.0",
     "description": "Onboarding assistance for Entra Permissions Management",
     "icons": {
@@ -12,7 +12,9 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "images/*"
+                "images/*",
+                "styles/*",
+                "data/*"
             ],
             "matches": [
                 "http://localhost:5500/*",
@@ -25,8 +27,20 @@
             "js": [
                 "scripts/content.js"
             ],
+            "css": [
+                "styles/style.css"
+            ],
             "matches": [
                 "https://*.cloudknox.io/*",
+                "http://localhost:5500/*"
+            ]
+        },
+        {
+            "js": [
+                "scripts/rbac-info.js"
+            ],
+            "matches": [
+                "https://*.cloudknox.io/analytics/*",
                 "http://localhost:5500/*"
             ]
         }
