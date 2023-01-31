@@ -73,10 +73,9 @@ async function findAttachableItems(attempts, timeoutId) {
 function init() {
     generateHelper();
     findAttachableItems(0, 0);
-    //initRbacData();
 }
 
 // need to find an event for both the page load and the react app load completion\
 // this is a hacky way to do it
+// todo: move to observers
 setTimeout(init, 5000);
-

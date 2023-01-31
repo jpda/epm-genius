@@ -37,6 +37,7 @@
         },
         {
             "js": [
+                "scripts/jmespath.min.js",
                 "scripts/rbac-info.js"
             ],
             "matches": [
