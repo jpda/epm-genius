@@ -44,13 +44,13 @@ function toggleNodeClickHandler(e) {
 
     setTimeout(() => { // are you kidding me, we have to wait for children to load, sigh 😒
         var siblings = this.parentNode.parentNode.querySelectorAll("div.explorer-lists__list__group__items");
+        if (siblings.length === 0) { return; }
         var siblingNameNode = siblings[0].querySelectorAll("div.explorer-lists__list__item");
         siblingNameNode.forEach(el => {
             if (!el.innerText) { return; }
             var name = el.innerText;
             var query = `[].resourceTypes[].operations[?name=='${rpName}/${name}'].{name: name, description: description}[]`;
             var data = jmespath.search(permsData, query);
-            console.log(data);
             if (data.length > 0) {
                 //var tip = generateCKTooltip(data[0].description);
                 el.innerText = `${el.innerText}: ${data[0].description}`;
